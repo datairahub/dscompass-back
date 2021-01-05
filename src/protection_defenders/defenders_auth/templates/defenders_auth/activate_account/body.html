@@ -1,0 +1,7 @@
+{% load i18n %}{% autoescape off %}
+{% translate "A user has requested to register in the application" %}
+{% translate 'Email:' %} {{ user.get_short_name }}
+
+{% translate "To confirm it, click on the following link" %}
+{{ url }}{{uid}}/{{token}}
+{% endautoescape %}

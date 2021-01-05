@@ -1,0 +1,4 @@
+{% load i18n %}{% autoescape off %}
+{% translate "Please go to the following page to reset your password" %}
+{{ url }}{{uid}}/{{token}}
+{% endautoescape %}

@@ -1,0 +1,4 @@
+{% load i18n %}{% autoescape off %}
+{% translate "Your user has been confirmed in DS-Compass" %}
+{% translate 'You can now login with:' %} {{ user.get_short_name }}
+{% endautoescape %}
