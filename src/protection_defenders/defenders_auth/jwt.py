@@ -23,17 +23,18 @@ class CookieTokenViewBase(views.TokenViewBase, CheckUserMailMixin):
     """
 
     def post(self, request, *args, **kwargs):
+        serializer = None
         if hasattr(request, 'data') and request.data.get('email'):
             # Check if the user is register
             user_email = self.check_login_mail(request.data['email'])
             request.data.update({"email": user_email})
+            serializer = MyTokenObtainPairSerializer(data=request.data)
         elif hasattr(request, 'refresh'):
             # Add refresh token to data if present
             request.data.update({"refresh": request.refresh})
+            serializer = self.get_serializer(data=request.data)
 
-        serializer = MyTokenObtainPairSerializer(data=request.data)
-
-        if not serializer.is_valid():
+        if not (serializer and serializer.is_valid()):
             raise exceptions.InvalidToken('Invalid Token')
 
         # Remove refresh token from response data
