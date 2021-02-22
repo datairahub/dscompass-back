@@ -2,8 +2,8 @@ from datetime import timedelta
 
 from .settings_base import *
 
-SECRET_KEY = 'ifvj9q4z#&sghwr%&yo7iv4hfhwenj(89y3ipajyf53ul6#*9_'
-CIPHER_KEY = 'ifvj9q4z#&sghwr%&yo7iv4hfhwenj(89y3ipajyf53ul6#*9_'
+SECRET_KEY = '...'
+CIPHER_KEY = '...'
 
 DEBUG = True
 

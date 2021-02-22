@@ -133,28 +133,16 @@ nano /srv/virtualenvs/dscompass/bin/postactivate
 11. Add the following lines:
 ```
 export CIPHER_SECRET_KEY=<your_cipher_secret_key>
-
 export DJANGO_SECRET_KEY=<your_django_app_secret_key>
-export DJANGO_ALLOWED_HOST=<the_app_domain>
-export DJANGO_DB_ENGINE="django.db.backends.mysql"
+
 export DJANGO_DB_NAME=<your_database_name>
 export DJANGO_DB_USER=<your_database_user>
 export DJANGO_DB_PASSWORD=<your_database_password>
-export DJANGO_DB_HOST=<your_database_host>
-export DJANGO_DB_PORT=<your_database_port>
-export DJANGO_ALLOWED_ORIGIN=<the_frontend_domain>
 
 export DJANGO_EMAIL_HOST=<the_smpt_server_host>
 export DJANGO_EMAIL_PORT=<the_smpt_server_port>
 export DJANGO_EMAIL_HOST_USER=<the_smpt_server_user>
 export DJANGO_EMAIL_HOST_PASSWORD=<the_smpt_server_password>
-
-export JWT_COOKIE_ACCESS_KEY=access
-export JWT_COOKIE_REFRESH_KEY=refresh
-export JWT_COOKIE_DOMAIN=<the_frontend_domain>
-
-export APP_FRONTEND_URL=<the_frontend_url_to_redirect_on_admin_exit>
-export USER_ACTIVATION_REDIRECT_URL=<the_frontend_domain>?user=created
 
 cd /srv/www/protectiondefenders-back/
 ```
@@ -186,7 +174,6 @@ python3 manage.py runserver --settings=src.protection_defenders.project_settings
 
 13. Migrate database:
 ```
-python3 manage.py migrate --settings=src.protection_defenders.project_settings.settings_production
 python3 manage.py makemigrations defenders_auth defenders_app --settings=src.protection_defenders.project_settings.settings_production
 python3 manage.py migrate --settings=src.protection_defenders.project_settings.settings_production
 ```
@@ -230,7 +217,19 @@ socket = /run/uwsgi/dscompass.sock
 chown-socket = saigesp:www-data
 chmod-socket = 660
 vacuum = true
+
+env=CIPHER_SECRET_KEY=<secret_key>
+env=DJANGO_SECRET_KEY=<secret_key>
+
+env=DJANGO_DB_NAME=<database_name>
+env=DJANGO_DB_USER=<database_user>
+env=DJANGO_DB_PASSWORD=<database_user_password>
+
+env=DJANGO_EMAIL_PORT=<smtp_server_port>
+env=DJANGO_EMAIL_HOST_USER=<your_email>
+env=DJANGO_EMAIL_HOST_PASSWORD=<your_password>
 ```
+> CIPHER_SECRET_KEY and DJANGO_SECRET_KEY must be equal, an use only letters and numbers
 
 4. Create a symlink to enable it:
 ```
@@ -264,8 +263,6 @@ Troubleshooting: Make sure that `/usr/local/bin/uwsgi` is executable:
 ```
 sudo chmod +x /usr/local/bin/uwsgi
 ```
-
-
 
 ##### Nginx (reverse proxy)
 
@@ -323,3 +320,16 @@ sudo systemctl restart nginx
 ```
 sudo ufw allow 'Nginx Full'
 ```
+
+## Let's encrypt (optional)
+
+1. Install Certbot
+```
+sudo apt install certbot python3-certbot-nginx
+```
+
+2. Obtain the certificate
+```
+sudo certbot --nginx -d ds-compass.protectioninternational.org
+```
+

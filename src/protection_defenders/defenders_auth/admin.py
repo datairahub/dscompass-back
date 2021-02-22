@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from .forms import DefendersUserCreationForm, DefendersUserChangeForm
@@ -10,9 +11,9 @@ from ..core.mixins import CheckUserMailMixin
 
 class DefendersUserAdmin(CheckUserMailMixin, UserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('user_email', 'password',)}),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+            'fields': ('is_active',),
         }),
         (_('Important dates'), {'fields': ('created', 'modified')}),
     )
@@ -22,13 +23,16 @@ class DefendersUserAdmin(CheckUserMailMixin, UserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    readonly_fields = ('id', 'created', 'modified',)
+    readonly_fields = ('email', 'id', 'created', 'modified', 'user_email')
     add_form = DefendersUserCreationForm
     form = DefendersUserChangeForm
     model = User
     list_display = ('id', 'is_active',)
-    search_fields = ('email',)
     ordering = ('email',)
+
+    @staticmethod
+    def user_email(user):
+        return user.send_signature_to_cipher_and_decrypt_value(value=user.email)
 
     def get_search_results(self, request, queryset, search_term):
         queryset, use_distinct = super().get_search_results(request, queryset, search_term)
