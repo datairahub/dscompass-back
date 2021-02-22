@@ -82,5 +82,15 @@ def TokenLogoutView(request):
     Logouts the user and removes the refresh token cookie
     """
     response = JsonResponse({})
-    response.delete_cookie(settings.SIMPLE_JWT['COOKIE_REFRESH_KEY'])
+    # response.delete_cookie(settings.SIMPLE_JWT['COOKIE_REFRESH_KEY'])
+    response.set_cookie(
+        key=settings.SIMPLE_JWT['COOKIE_REFRESH_KEY'],
+        value="...",
+        expires=datetime.now() + settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+        secure=settings.SIMPLE_JWT['COOKIE_SECURE'],
+        httponly=settings.SIMPLE_JWT['COOKIE_HTTPONLY'],
+        domain=settings.SIMPLE_JWT['COOKIE_DOMAIN'],
+        samesite=settings.SIMPLE_JWT['COOKIE_SAMESITE'],
+        max_age=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds(),
+    )
     return response
