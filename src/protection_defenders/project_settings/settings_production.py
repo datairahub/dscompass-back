@@ -34,7 +34,7 @@ SIMPLE_JWT = {
     'COOKIE_SECURE': False,
     'COOKIE_HTTPONLY': True,
     'COOKIE_DOMAIN': "protectioninternational.org",
-    'COOKIE_SAMESITE': 'Strict',
+    'COOKIE_SAMESITE': 'Lax',
 }
 
 EMAIL_HOST = "django.core.mail.backends.smtp.EmailBackend"
