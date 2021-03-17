@@ -123,3 +123,5 @@ dmypy.json
 /media
 /static
 **/migrations/
+
+logs.txt
