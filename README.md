@@ -333,3 +333,7 @@ sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d ds-compass.protectioninternational.org
 ```
 
+Renew certificates
+```
+sudo certbot renew
+```
